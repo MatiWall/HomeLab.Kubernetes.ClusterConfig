@@ -14,4 +14,9 @@ RUN apt-get install -y openssh-client
 RUN apt-get update
 RUN apt-get install sshpass
 
+# Copy SSH key
+#RUN mkdir -p /root/.ssh
+#COPY id_rsa /root/.ssh/id_rsa
+#RUN chmod 600 /root/.ssh/id_rsa
+
 

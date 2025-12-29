@@ -5,6 +5,8 @@
   remote_user: root
   tasks:
   - name: Apply Traefik Service
+    environment:
+      K8S_AUTH_KUBECONFIG: /etc/rancher/k3s/k3s.yaml
     kubernetes.core.k8s:
       state: present
       definition: 

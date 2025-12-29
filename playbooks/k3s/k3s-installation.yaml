@@ -4,6 +4,25 @@
   become: true
 
   tasks:
+    - name: Kill any running k3s processes
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-killall.sh || true
+    - name: Uninstall k3s if installed
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-uninstall.sh || true
+    - name: Remove leftover k3s directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /var/lib/rancher/k3s
+        - /etc/rancher/k3s
+        - /etc/kubernetes
+
+    - name: Remove user kubeconfig (optional, clean start)
+      ansible.builtin.file:
+        path: ~/.kube/config
+        state: absent
     - name: Install k3s
       ansible.builtin.shell:
         cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{k3s_version}} sh -s - --write-kubeconfig-mode 644
@@ -19,6 +38,25 @@
   hosts: workers
   become: true
   tasks:
+    - name: Kill any running k3s processes
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-killall.sh || true
+
+    - name: Uninstall k3s if installed
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-agent-uninstall.sh || true
+
+    - name: Remove leftover k3s directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /var/lib/rancher/k3s
+        - /etc/rancher/k3s
+        - /etc/kubernetes
+    - name: Uninstall k3s if installed
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-uninstall.sh || true
     - name: Install K3s on worker
       ansible.builtin.shell:
         cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{k3s_version}} K3S_URL=https://{{master_ip}}:6443 K3S_TOKEN="{{ hostvars['pi5-m1']['k3s_token'].stdout }}" sh -

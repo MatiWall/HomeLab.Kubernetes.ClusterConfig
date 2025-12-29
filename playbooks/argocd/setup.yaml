@@ -4,6 +4,8 @@
   become_user: root
   tasks:
     - name: Create namespaces for ArgoCD
+      environment:
+        K8S_AUTH_KUBECONFIG: /etc/rancher/k3s/k3s.yaml
       kubernetes.core.k8s:
         api_version: v1
         kind: Namespace
@@ -13,8 +15,9 @@
       git:
         repo: https://github.com/MatiWall/cluster-argocd-applications.git
         dest: /tmp/argocd-apps
-        version: main  # Replace with the branch or tag you want to use
+        version: main
 
     - name: Apply cluster applications helm apps
-      command: kubectl apply -f /tmp/argocd-apps/argocd-selfmanaged.yaml
-    
+      shell: kubectl apply -f /tmp/argocd-apps/argocd-selfmanaged.yaml
+      args:
+        executable: /bin/bash

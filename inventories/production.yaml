@@ -22,5 +22,5 @@ all:
   vars:
     master_ip: 192.168.0.11
     registry_domain: 192.168.0.11
-    k3s_version: v1.26.11+k3s2
+    k3s_version: v1.35.0+k3s1
 
