@@ -6,5 +6,4 @@
 - import_playbook: helm/helm-installation.yaml
 - import_playbook: local-image-registry/setup.yaml
 - import_playbook: hosts.yaml
-- import_playbook: cert-manager.yaml
 - import_playbook: argocd/argocd.yaml
