@@ -1,11 +1,11 @@
 ---
 - name: Add entry to /etc/hosts
   hosts: masters, workers
-  become: yes  # To run tasks with elevated privileges
+  become: true  # To run tasks with elevated privileges
   tasks:
     - name: Add entry to /etc/hosts
       lineinfile:
         path: /etc/hosts
-        line: "{{ registry_domain }} docker-registry.mw"
+        line: "{{ registry_domain }} docker-registry.mw.local"
         insertafter: EOF
 
