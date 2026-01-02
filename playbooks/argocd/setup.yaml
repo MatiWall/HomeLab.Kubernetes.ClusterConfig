@@ -16,8 +16,11 @@
         repo: https://github.com/MatiWall/cluster-argocd-applications.git
         dest: /tmp/argocd-apps
         version: main
-
-    - name: Apply cluster applications helm apps
-      shell: kubectl apply -f /tmp/argocd-apps/argocd-selfmanaged.yaml
+    - name: Apply cluster setup
+      shell: kubectl apply -f /tmp/argocd-apps/argocd-selfmanaged-cluster.yaml
+      args:
+        executable: /bin/bash
+    - name: Apply applications setup
+      shell: kubectl apply -f /tmp/argocd-apps/argocd-selfmanaged-apps.yaml
       args:
         executable: /bin/bash
